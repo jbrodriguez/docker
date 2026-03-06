@@ -14,14 +14,6 @@ services:
       - 7060:5055
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.seerr.rule=Host(`seerr.lan.jbrio.net`)
-      - traefik.http.routers.seerr.entrypoints=websecure
-      - traefik.http.routers.seerr.tls=true
-      - traefik.http.routers.seerr.tls.certresolver=cloudflare
-      - traefik.http.routers.seerr.middlewares=lan-only
-      - traefik.http.services.seerr.loadbalancer.server.port=5055
     volumes:
       - ${HOME}/pods/seerr/config:/app/config
     healthcheck:

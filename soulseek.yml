@@ -12,14 +12,6 @@ services:
       - PUID=1000
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.soulseek.rule=Host(`soulseek.lan.jbrio.net`)
-      - traefik.http.routers.soulseek.entrypoints=websecure
-      - traefik.http.routers.soulseek.tls=true
-      - traefik.http.routers.soulseek.tls.certresolver=cloudflare
-      - traefik.http.routers.soulseek.middlewares=lan-only
-      - traefik.http.services.soulseek.loadbalancer.server.port=6080
     ports:
       - 6080:6080
       - 61122:61122 # example listening port, check Options -> Login

@@ -1,0 +1,124 @@
+{
+  email jbrodriguez@gmail.com
+  acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+portainer.lan.jbrio.net {
+  reverse_proxy portainer:9000
+}
+
+seerr.lan.jbrio.net {
+  reverse_proxy seerr:5055
+}
+
+miniflux.lan.jbrio.net {
+  reverse_proxy miniflux:8080
+}
+
+openclaw.lan.jbrio.net {
+  reverse_proxy openclaw-gateway:18789
+}
+
+jellyfin.lan.jbrio.net {
+  reverse_proxy host.docker.internal:8096
+}
+
+radarr.lan.jbrio.net {
+  reverse_proxy radarr:7878
+}
+
+sonarr.lan.jbrio.net {
+  reverse_proxy sonarr:8989
+}
+
+prowlarr.lan.jbrio.net {
+  reverse_proxy prowlarr:9696
+}
+
+qbittorrent.lan.jbrio.net {
+  reverse_proxy qbittorrent:8080
+}
+
+audiobookshelf.lan.jbrio.net {
+  reverse_proxy audiobookshelf:80
+}
+
+ollama.lan.jbrio.net {
+  reverse_proxy ollama:11434
+}
+
+ollama-ui.lan.jbrio.net {
+  reverse_proxy ollama-webui:8080
+}
+
+glance.lan.jbrio.net {
+  reverse_proxy glance:8080
+}
+
+notifiarr.lan.jbrio.net {
+  reverse_proxy notifiarr:5454
+}
+
+navidrome.lan.jbrio.net {
+  reverse_proxy navidrome:4533
+}
+
+timeline.lan.jbrio.net {
+  reverse_proxy timeline:8080
+}
+
+tabula.lan.jbrio.net {
+  reverse_proxy tabula:8080
+}
+
+uhf.lan.jbrio.net {
+  reverse_proxy uhf-server:8000
+}
+
+iptv.lan.jbrio.net {
+  reverse_proxy iptvfrontend:80
+}
+
+iptvbackend.lan.jbrio.net {
+  reverse_proxy iptvbackend:3000
+}
+
+ytdlp.lan.jbrio.net {
+  reverse_proxy yt-dlp:3033
+}
+
+zars.lan.jbrio.net {
+  reverse_proxy zars:7028
+}
+
+mediagui.lan.jbrio.net {
+  reverse_proxy mediagui:7623
+}
+
+qui.lan.jbrio.net {
+  reverse_proxy qui:7476
+}
+
+nzbget.lan.jbrio.net {
+  reverse_proxy nzbget:6789
+}
+
+soulseek.lan.jbrio.net {
+  reverse_proxy soulseek:6080
+}
+
+immich.lan.jbrio.net {
+  reverse_proxy immich-server:2283
+}
+
+immich-ml.lan.jbrio.net {
+  reverse_proxy immich-machine-learning:3003
+}
+
+academy.lan.jbrio.net {
+  reverse_proxy academy:8080
+}
+
+epub.lan.jbrio.net {
+  reverse_proxy epub_to_audiobook:7860
+}

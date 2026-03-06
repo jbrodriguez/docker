@@ -8,14 +8,6 @@ services:
 #    restart: unless-stopped
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.navidrome.rule=Host(`navidrome.lan.jbrio.net`)
-      - traefik.http.routers.navidrome.entrypoints=websecure
-      - traefik.http.routers.navidrome.tls=true
-      - traefik.http.routers.navidrome.tls.certresolver=cloudflare
-      - traefik.http.routers.navidrome.middlewares=lan-only
-      - traefik.http.services.navidrome.loadbalancer.server.port=4533
     environment:
       # Optional: put your config options customization here. Examples:
       ND_SCANSCHEDULE: 1h

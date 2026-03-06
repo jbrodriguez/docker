@@ -11,12 +11,4 @@ services:
       - "7623:7623"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.mediagui.rule=Host(`mediagui.lan.jbrio.net`)
-      - traefik.http.routers.mediagui.entrypoints=websecure
-      - traefik.http.routers.mediagui.tls=true
-      - traefik.http.routers.mediagui.tls.certresolver=cloudflare
-      - traefik.http.routers.mediagui.middlewares=lan-only
-      - traefik.http.services.mediagui.loadbalancer.server.port=7623
 

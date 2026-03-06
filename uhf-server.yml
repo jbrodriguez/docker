@@ -6,14 +6,6 @@ services:
       - "7090:${PORT:-8000}"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.uhf.rule=Host(`uhf.lan.jbrio.net`)
-      - traefik.http.routers.uhf.entrypoints=websecure
-      - traefik.http.routers.uhf.tls=true
-      - traefik.http.routers.uhf.tls.certresolver=cloudflare
-      - traefik.http.routers.uhf.middlewares=lan-only
-      - traefik.http.services.uhf.loadbalancer.server.port=8000
     volumes:
       - /mnt/staging/uhf/recordings:/recordings
       - /mnt/staging/uhf/db:/var/lib/uhf-server
