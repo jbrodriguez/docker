@@ -1,0 +1,16 @@
+name: yt-recorder
+
+services:
+  yt-recorder:
+    build: ../yt-recorder
+    container_name: yt-recorder
+    # restart: unless-stopped
+
+    entrypoint: ["/app/record.sh"]
+
+    environment:
+      - TZ=America/Panama
+      - YT_URL=https://www.youtube.com/watch?v=tNVlFUvxjGk
+
+    volumes:
+      - /mnt/staging/yt-recorder/recordings:/recordings

@@ -1,0 +1,62 @@
+services:
+  miniflux:
+    container_name: miniflux
+    image: miniflux/miniflux:latest
+    ports:
+      - 8484:8080
+    depends_on:
+      miniflux-db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://miniflux:secret@miniflux-db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+      - SCHEDULER_ROUND_ROBIN_MIN_INTERVAL=10
+      - POLLING_FREQUENCY=15
+    networks:
+      - proxy
+      - miniflux-docker
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.miniflux.rule=Host(`miniflux.lan.jbrio.net`)
+      - traefik.http.routers.miniflux.entrypoints=websecure
+      - traefik.http.routers.miniflux.tls=true
+      - traefik.http.routers.miniflux.tls.certresolver=cloudflare
+      - traefik.http.routers.miniflux.middlewares=lan-only
+      - traefik.http.services.miniflux.loadbalancer.server.port=8080
+  miniflux-db:
+    container_name: miniflux-db
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Panama
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=miniflux
+    volumes:
+      - miniflux-data:/var/lib/postgresql/data
+      # - /srv/miniflux/db:/var/lib/postgresql/data
+      # - ${HOME}/pods/miniflux/db:/var/lib/postgresql/data
+      # - miniflux-db:/mnt/staging/miniflux/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+    networks:
+      - miniflux-docker
+
+volumes:
+  miniflux-data:
+
+networks:
+  miniflux-docker:
+    driver: bridge
+    external: false
+  proxy:
+    external: true

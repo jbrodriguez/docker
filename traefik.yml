@@ -1,0 +1,45 @@
+services:
+  traefik:
+    image: traefik:v3.6.7
+    container_name: traefik
+    restart: unless-stopped
+    user: "1000:1000"
+    group_add:
+      - "969"
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - proxy
+    env_file:
+      - .env-traefik
+    command:
+      - --providers.docker=true
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.email=jbrodriguez@gmail.com
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --api.dashboard=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/letsencrypt:/letsencrypt
+      - ./traefik/dynamic:/etc/traefik/dynamic
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.lan.jbrio.net`)
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.certresolver=cloudflare
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.middlewares=lan-only
+      - traefik.http.middlewares.lan-only.ipallowlist.sourcerange=192.168.2.0/24,172.22.22.0/24
+
+networks:
+  proxy:
+    external: true

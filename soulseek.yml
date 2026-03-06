@@ -1,0 +1,27 @@
+services:
+  soulseek:
+    container_name: soulseek
+    image: realies/soulseek
+    volumes:
+      - /mnt/staging/soulseek/appdata:/data/.SoulseekQt
+      - /mnt/staging/soulseek/downloads:/data/Soulseek Downloads
+      - /mnt/staging/soulseek/logs:/data/Soulseek Chat Logs
+      - /mnt/staging/soulseek/shared:/data/Soulseek Shared Folder
+    environment:
+      - PGID=1000
+      - PUID=1000
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.soulseek.rule=Host(`soulseek.lan.jbrio.net`)
+      - traefik.http.routers.soulseek.entrypoints=websecure
+      - traefik.http.routers.soulseek.tls=true
+      - traefik.http.routers.soulseek.tls.certresolver=cloudflare
+      - traefik.http.routers.soulseek.middlewares=lan-only
+      - traefik.http.services.soulseek.loadbalancer.server.port=6080
+    ports:
+      - 6080:6080
+      - 61122:61122 # example listening port, check Options -> Login
+      - 61123:61123 # example obfuscated port, check Options -> Login
+

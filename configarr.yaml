@@ -1,0 +1,14 @@
+#version: "3.8"
+services:
+  configarr:
+    image: ghcr.io/raydak-labs/configarr:latest
+    container_name: configarr
+    #user: 1000:1000 # Optional, defaults to root:root
+    environment:
+      - TZ=America/Panama
+    volumes:
+      - /mnt/staging/pods/configarr/config:/app/config # Contains the config.yml and secrets.yml
+      - /mnt/staging/pods/configarr/repos:/app/repos # Cache repositories
+      # - ./custom/cfs:/app/cfs # Optional if custom formats locally provided
+      # - ./custom/templates:/app/templates # Optional if custom templates
+    restart: "no" # optional make sure this is set to no or removed. Default is no

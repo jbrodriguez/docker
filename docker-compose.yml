@@ -1,0 +1,45 @@
+include:
+  - ./traefik.yml
+  - ./portainer.yml
+  # - ./nominal.yml
+  # - ./photoview.yml
+  # - ./immich.yml
+  # - ./jellyfin.yml
+  # - ./yt-dlp.yml
+  # - ./audiobookshelf.yml
+  # - ./iptvnator.yml
+  # - ./stirlingpdf.yml
+  # - ./openhealth.yml
+  # - ./dumbassets.yml
+
+  - ./nzbget.yml
+  - ./qbittorrent.yml
+  - ./radarr.yml
+  - ./sonarr.yml
+  - ./prowlarr.yml
+  - ./jellyfin.yml
+  - ./seerr.yml
+  - ./notifiarr.yml
+  - ./qui.yml
+
+  - ./navidrome.yml
+  - ./glance.yml
+  - ./miniflux.yml
+  - ./iptvnator.yml
+  - ./yt-dlp.yml
+  - ./soulseek.yml
+  - ./ollama.yml
+  - ./immich.yml
+  - ./audiobookshelf.yml
+  - ./epub_to_audiobook.yml
+  - ./url_monitor.yml
+  - ./uhf-server.yml
+  - ./openclaw.yml
+  # - ./yt-recorder.yml
+
+  - ./zars.yml
+  - ./mediagui.yml
+  - ./timeline.yml
+  - ./academy.yml
+
+  - ./tabula.yml

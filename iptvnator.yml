@@ -1,0 +1,39 @@
+services:
+  iptvbackend:
+    container_name: iptvbackend
+    image: 4gray/iptvnator-backend:latest
+    ports:
+      - "7333:3000"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.iptvbackend.rule=Host(`iptvbackend.lan.jbrio.net`)
+      - traefik.http.routers.iptvbackend.entrypoints=websecure
+      - traefik.http.routers.iptvbackend.tls=true
+      - traefik.http.routers.iptvbackend.tls.certresolver=cloudflare
+      - traefik.http.routers.iptvbackend.middlewares=lan-only
+      - traefik.http.services.iptvbackend.loadbalancer.server.port=3000
+    environment:
+      - CLIENT_URL=http://hermes.tandil.lan:4333 
+      # this one should match with the address and port in frontend CLIENT_URL env
+      
+  iptvfrontend: 
+    container_name: iptvfrontend
+    image: 4gray/iptvnator:latest
+    ports:
+      - "4333:80"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.iptv.rule=Host(`iptv.lan.jbrio.net`)
+      - traefik.http.routers.iptv.entrypoints=websecure
+      - traefik.http.routers.iptv.tls=true
+      - traefik.http.routers.iptv.tls.certresolver=cloudflare
+      - traefik.http.routers.iptv.middlewares=lan-only
+      - traefik.http.services.iptv.loadbalancer.server.port=80
+    environment:
+      - BACKEND_URL=http://hermes.tandil.lan:7333 
+      # this one should match with the address of the backend service
+      

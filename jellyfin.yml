@@ -1,0 +1,50 @@
+name: jellyfin
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: "1000:1000"
+    network_mode: 'host'
+    volumes:
+      - ${HOME}/pods/jellyfin:/config
+      - ${HOME}/tmp/jellyfin:/cache
+      - type: bind
+        source: /mnt/ark/content/media/
+        target: /media
+      # - type: bind
+      #   source: /path/to/media2
+      #   target: /media2
+      #   read_only: true
+      # Optional - extra fonts to be used during transcoding with subtitle burn-in
+      # - type: bind
+      #   source: /path/to/fonts
+      #   target: /usr/local/share/fonts/custom
+      #   read_only: true
+    # restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://hermes.tandil.lan
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    security_opt:
+      - seccomp=unconfined  # Optional: helps if ldconfig or GPU libs get blocked
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - 8096:8096
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # devices:
+    #   - "/dev/nvidia-caps:/dev/nvidia-caps"
+    #   - "/dev/nvidia0:/dev/nvidia0"
+    #   - "/dev/nvidiactl:/dev/nvidiactl"
+    #   - "/dev/nvidia-uvm:/dev/nvidia-uvm"
+    #   - "/dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools"

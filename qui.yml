@@ -1,0 +1,23 @@
+services:
+  qui:
+    container_name: qui
+    image: ghcr.io/autobrr/qui:latest
+    ports:
+      - "7080:7476"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.qui.rule=Host(`qui.lan.jbrio.net`)
+      - traefik.http.routers.qui.entrypoints=websecure
+      - traefik.http.routers.qui.tls=true
+      - traefik.http.routers.qui.tls.certresolver=cloudflare
+      - traefik.http.routers.qui.middlewares=lan-only
+      - traefik.http.services.qui.loadbalancer.server.port=7476
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Panama
+    volumes:
+      - ${HOME}/pods/qbittorrent/config:/config
+      - /mnt/ark/content/torrents:/data/torrents

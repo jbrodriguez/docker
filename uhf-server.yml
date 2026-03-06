@@ -1,0 +1,23 @@
+services:
+  uhf-server:
+    image: swapplications/uhf-server:1.6.0
+    container_name: uhf-server
+    ports:
+      - "7090:${PORT:-8000}"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.uhf.rule=Host(`uhf.lan.jbrio.net`)
+      - traefik.http.routers.uhf.entrypoints=websecure
+      - traefik.http.routers.uhf.tls=true
+      - traefik.http.routers.uhf.tls.certresolver=cloudflare
+      - traefik.http.routers.uhf.middlewares=lan-only
+      - traefik.http.services.uhf.loadbalancer.server.port=8000
+    volumes:
+      - /mnt/staging/uhf/recordings:/recordings
+      - /mnt/staging/uhf/db:/var/lib/uhf-server
+    environment:
+      - PORT=${PORT:-8000}
+      - PASSWORD=${PASSWORD:-} # Optional password protection
+    command: uhf-server --port ${PORT:-8000} --recordings-dir /recordings ${PASSWORD:+--password ${PASSWORD}} --enable-commercial-detection

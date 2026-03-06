@@ -1,0 +1,22 @@
+services:
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    # restart: unless-stopped
+    ports:
+      - "5454:5454"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.notifiarr.rule=Host(`notifiarr.lan.jbrio.net`)
+      - traefik.http.routers.notifiarr.entrypoints=websecure
+      - traefik.http.routers.notifiarr.tls=true
+      - traefik.http.routers.notifiarr.tls.certresolver=cloudflare
+      - traefik.http.routers.notifiarr.middlewares=lan-only
+      - traefik.http.services.notifiarr.loadbalancer.server.port=5454
+    volumes:
+      - ${HOME}/pods/notifiarr/config:/config
+      - /var/run/utmp:/var/run/utmp
+      - /etc/machine-id:/etc/machine-id

@@ -1,0 +1,18 @@
+  services:
+    academy:
+      container_name: academy
+      image: ghcr.io/jbrodriguez/academy
+      environment:
+        - TZ=America/Panama
+      ports:
+        - "7070:8080"
+      networks:
+        - proxy
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.academy.rule=Host(`academy.lan.jbrio.net`)
+        - traefik.http.routers.academy.entrypoints=websecure
+        - traefik.http.routers.academy.tls=true
+        - traefik.http.routers.academy.tls.certresolver=cloudflare
+        - traefik.http.routers.academy.middlewares=lan-only
+        - traefik.http.services.academy.loadbalancer.server.port=8080

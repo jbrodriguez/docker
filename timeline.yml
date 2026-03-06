@@ -1,0 +1,43 @@
+services:
+  timeline:
+    image: ghcr.io/jbrodriguez/timeline:latest
+    container_name: timeline
+    env_file: .env-timeline
+    environment:
+      - TZ=America/Panama
+      # Override defaults if needed
+      # - TIMELINE_CONFIG=/config
+      # - TIMELINE_DATA=/data
+      # - TIMELINE_TMP=/tmp
+      # - TIMELINE_PORT=8080
+    volumes:
+      - ${HOME}/pods/timeline/config:/config
+      - ${HOME}/pods/timeline/data:/data
+      - ${HOME}/pods/timeline/tmp:/tmp
+      - ${HOME}/tmp/timeline:/logs
+    ports:
+      - "7630:8080"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.timeline.rule=Host(`timeline.lan.jbrio.net`)
+      - traefik.http.routers.timeline.entrypoints=websecure
+      - traefik.http.routers.timeline.tls=true
+      - traefik.http.routers.timeline.tls.certresolver=cloudflare
+      - traefik.http.routers.timeline.middlewares=lan-only
+      - traefik.http.services.timeline.loadbalancer.server.port=8080
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

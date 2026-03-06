@@ -1,0 +1,23 @@
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    ports:
+      - 13378:80
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.lan.jbrio.net`)
+      - traefik.http.routers.audiobookshelf.entrypoints=websecure
+      - traefik.http.routers.audiobookshelf.tls=true
+      - traefik.http.routers.audiobookshelf.tls.certresolver=cloudflare
+      - traefik.http.routers.audiobookshelf.middlewares=lan-only
+      - traefik.http.services.audiobookshelf.loadbalancer.server.port=80
+    volumes:
+      - /mnt/staging/audiobookshelf/audiobooks:/audiobooks
+      - /mnt/staging/audiobookshelf/podcasts:/podcasts
+      - ${HOME}/pods/audiobookshelf:/config
+      - /mnt/staging/tmp/audiobookshelf:/metadata
+    environment:
+      - TZ=America/Panama

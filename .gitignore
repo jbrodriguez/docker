@@ -1,0 +1,6 @@
+.env*
+traefik/letsencrypt/acme.json
+traefik/letsencrypt/acme.json.bak*
+traefik/letsencrypt/*.bak*
+*.bak
+*.bak.*

@@ -1,0 +1,24 @@
+http:
+  routers:
+    jellyfin:
+      rule: "Host(`jellyfin.lan.jbrio.net`)"
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: cloudflare
+      middlewares:
+        - lan-only
+      service: jellyfin
+
+  services:
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://hermes.tandil.lan:8096"
+
+  middlewares:
+    lan-only:
+      ipAllowList:
+        sourceRange:
+          - 192.168.2.0/24
+          - 172.22.22.0/24

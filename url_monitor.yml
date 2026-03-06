@@ -1,0 +1,13 @@
+services:
+  url_monitor:
+    container_name: url_monitor
+    build: ../url_monitor
+    # restart: unless-stopped
+    environment:
+      - URLS=https://www.progreso-afp.com/api/documentos/fact-sheet-fondo-star,https://www.progreso-afp.com/api/documentos/fact-sheet-fondo-basic,https://www.progreso-afp.com/api/documentos/fact-sheet-fondo-plus
+      - POLL_INTERVAL_DAYS=7
+      - USER_AGENT=progreso-monitor/1.0
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+    volumes:
+      - ${HOME}/pods/url_monitor:/app/data
+
