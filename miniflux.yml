@@ -18,15 +18,6 @@ services:
     networks:
       - proxy
       - miniflux-docker
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=proxy
-      - traefik.http.routers.miniflux.rule=Host(`miniflux.lan.jbrio.net`)
-      - traefik.http.routers.miniflux.entrypoints=websecure
-      - traefik.http.routers.miniflux.tls=true
-      - traefik.http.routers.miniflux.tls.certresolver=cloudflare
-      - traefik.http.routers.miniflux.middlewares=lan-only
-      - traefik.http.services.miniflux.loadbalancer.server.port=8080
   miniflux-db:
     container_name: miniflux-db
     image: postgres:17-alpine

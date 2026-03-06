@@ -13,11 +13,3 @@ services:
       - "7028:7028"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.zars.rule=Host(`zars.lan.jbrio.net`)
-      - traefik.http.routers.zars.entrypoints=websecure
-      - traefik.http.routers.zars.tls=true
-      - traefik.http.routers.zars.tls.certresolver=cloudflare
-      - traefik.http.routers.zars.middlewares=lan-only
-      - traefik.http.services.zars.loadbalancer.server.port=7028

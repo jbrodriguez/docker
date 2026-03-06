@@ -28,14 +28,6 @@ services:
     networks:
       - proxy
       - immich-backend
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.immich.rule=Host(`immich.lan.jbrio.net`)
-      - traefik.http.routers.immich.entrypoints=websecure
-      - traefik.http.routers.immich.tls=true
-      - traefik.http.routers.immich.tls.certresolver=cloudflare
-      - traefik.http.routers.immich.middlewares=lan-only
-      - traefik.http.services.immich.loadbalancer.server.port=2283
     depends_on:
       - redis
       - database
@@ -61,14 +53,6 @@ services:
     networks:
       - proxy
       - immich-backend
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.immich-ml.rule=Host(`immich-ml.lan.jbrio.net`)
-      - traefik.http.routers.immich-ml.entrypoints=websecure
-      - traefik.http.routers.immich-ml.tls=true
-      - traefik.http.routers.immich-ml.tls.certresolver=cloudflare
-      - traefik.http.routers.immich-ml.middlewares=lan-only
-      - traefik.http.services.immich-ml.loadbalancer.server.port=3003
     # restart: always
     healthcheck:
       disable: false

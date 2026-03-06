@@ -6,14 +6,6 @@ services:
       - 3033:3033
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.ytdlp.rule=Host(`ytdlp.lan.jbrio.net`)
-      - traefik.http.routers.ytdlp.entrypoints=websecure
-      - traefik.http.routers.ytdlp.tls=true
-      - traefik.http.routers.ytdlp.tls.certresolver=cloudflare
-      - traefik.http.routers.ytdlp.middlewares=lan-only
-      - traefik.http.services.ytdlp.loadbalancer.server.port=3033
     volumes:
       - /mnt/staging/tmp:/downloads # replace <your dir> with a directory on your host system
       - ${HOME}/pods/yt_dlp:/config

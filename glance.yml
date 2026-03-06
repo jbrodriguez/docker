@@ -12,13 +12,5 @@ services:
       - 8888:8080
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.glance.rule=Host(`glance.lan.jbrio.net`)
-      - traefik.http.routers.glance.entrypoints=websecure
-      - traefik.http.routers.glance.tls=true
-      - traefik.http.routers.glance.tls.certresolver=cloudflare
-      - traefik.http.routers.glance.middlewares=lan-only
-      - traefik.http.services.glance.loadbalancer.server.port=8080
  #   restart: unless-stopped
   

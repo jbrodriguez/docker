@@ -12,14 +12,6 @@ services:
       - "7860:7860"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.epub.rule=Host(`epub.lan.jbrio.net`)
-      - traefik.http.routers.epub.entrypoints=websecure
-      - traefik.http.routers.epub.tls=true
-      - traefik.http.routers.epub.tls.certresolver=cloudflare
-      - traefik.http.routers.epub.middlewares=lan-only
-      - traefik.http.services.epub.loadbalancer.server.port=7860
     volumes:
       - ${HOME}/pods/epub_audiobook:/app
     command: 'python3 /app_src/main_ui.py --host 0.0.0.0 --port 7860'

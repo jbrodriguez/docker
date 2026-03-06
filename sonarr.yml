@@ -6,14 +6,6 @@ services:
       - "7040:8989"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.sonarr.rule=Host(`sonarr.lan.jbrio.net`)
-      - traefik.http.routers.sonarr.entrypoints=websecure
-      - traefik.http.routers.sonarr.tls=true
-      - traefik.http.routers.sonarr.tls.certresolver=cloudflare
-      - traefik.http.routers.sonarr.middlewares=lan-only
-      - traefik.http.services.sonarr.loadbalancer.server.port=8989
     environment:
       - PUID=1000
       - PGID=1000

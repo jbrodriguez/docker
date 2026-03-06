@@ -19,14 +19,6 @@ services:
       - "7630:8080"
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.timeline.rule=Host(`timeline.lan.jbrio.net`)
-      - traefik.http.routers.timeline.entrypoints=websecure
-      - traefik.http.routers.timeline.tls=true
-      - traefik.http.routers.timeline.tls.certresolver=cloudflare
-      - traefik.http.routers.timeline.middlewares=lan-only
-      - traefik.http.services.timeline.loadbalancer.server.port=8080
     healthcheck:
       test:
         [
