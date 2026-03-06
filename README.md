@@ -37,6 +37,26 @@ uci commit dhcp
   - `reverse_proxy host.docker.internal:8096`
 - `proxy` network is used to allow Caddy to reach containers
 
+## WireGuard/Docker Subnet Overlap
+WireGuard used `172.22.22.0/24`, which overlapped Docker’s default bridge (`172.22.0.0/16`).
+This caused WG clients to time out when reaching `hermes` and services.
+
+Fix: set Docker’s default address pool to a non-overlapping range:
+```json
+{
+  "default-address-pools": [
+    {"base":"172.30.0.0/16","size":24}
+  ]
+}
+```
+
+Then:
+```sh
+dc down
+sudo systemctl restart docker
+dc up -d
+```
+
 ## Removed
 - Traefik has been removed (files deleted and labels stripped)
 - `traefik/` directory and `.env-traefik` are no longer used
