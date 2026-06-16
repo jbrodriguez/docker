@@ -1,0 +1,26 @@
+services:
+  mfx:
+    image: ghcr.io/jbrodriguez/mfx:latest
+    container_name: mfx
+    restart: unless-stopped
+    env_file: .env-mfx
+    environment:
+      - TZ=America/Panama
+    volumes:
+      # Host folder → container. Owned by your login user (uid 1000), which the
+      # image runs as, so no chown is needed. Holds mfx.db.
+      - ${HOME}/pods/mfx/data:/data
+    ports:
+      - "7120:8080"
+    networks:
+      - proxy
+    healthcheck:
+      # distroless has no shell/curl, so the binary probes itself.
+      test: ["CMD", "/mfx", "-healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  proxy:
+    external: true

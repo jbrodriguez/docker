@@ -123,6 +123,11 @@ mediagui.lan.jbrio.net {
   reverse_proxy mediagui:7623
 }
 
+mfx.lan.jbrio.net {
+  import lan_only
+  reverse_proxy mfx:8080
+}
+
 qui.lan.jbrio.net {
   import lan_only
   reverse_proxy qui:7476

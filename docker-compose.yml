@@ -39,6 +39,7 @@ include:
 
   - ./zars.yml
   - ./mediagui.yml
+  - ./mfx.yml
   - ./timeline.yml
   - ./academy.yml
   - ./brains.yml
