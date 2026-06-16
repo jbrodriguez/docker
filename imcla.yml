@@ -1,0 +1,70 @@
+# ~/pods/docker/imcla.yml
+# Usage: dc -f docker-compose.yml -f imcla.yml up -d
+# Or add to your main docker-compose.yml includes
+
+services:
+  imcla-db:
+    container_name: imcla-db
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    env_file: .env-imcla
+    environment:
+      - POSTGRES_DB=imcla
+      - POSTGRES_USER=imcla
+    volumes:
+      - ${HOME}/pods/imcla/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imcla -d imcla"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - proxy
+
+  imcla:
+    container_name: imcla
+    image: ghcr.io/jbrodriguez/imcla
+    restart: unless-stopped
+    env_file: .env-imcla
+    depends_on:
+      imcla-db:
+        condition: service_healthy
+    environment:
+      - TZ=America/Panama
+    volumes:
+      - ${HOME}/pods/imcla/data:/data
+      # Photo sources (read-only) — adjust to your paths:
+      # - /mnt/nas/photos:/photos/nas:ro
+      # - /mnt/usb/camera:/photos/camera:ro
+    ports:
+      - "7625:7625"
+    networks:
+      - proxy
+
+  imcla-worker:
+    container_name: imcla-worker
+    image: ghcr.io/jbrodriguez/imcla-worker
+    restart: unless-stopped
+    env_file: .env-imcla
+    depends_on:
+      imcla-db:
+        condition: service_healthy
+    environment:
+      - TZ=America/Panama
+    volumes:
+      - ${HOME}/pods/imcla/data:/data
+      - ${HOME}/pods/imcla/models:/root/.insightface
+      # Photo sources — must match imcla service mounts:
+      # - /mnt/nas/photos:/photos/nas:ro
+      # - /mnt/usb/camera:/photos/camera:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - proxy

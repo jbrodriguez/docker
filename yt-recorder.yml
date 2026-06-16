@@ -10,7 +10,7 @@ services:
 
     environment:
       - TZ=America/Panama
-      - YT_URL=https://www.youtube.com/watch?v=tNVlFUvxjGk
+      - YT_URL=https://www.youtube.com/watch?v=hae1BHQN1pE
 
     volumes:
       - /mnt/staging/yt-recorder/recordings:/recordings

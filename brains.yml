@@ -1,0 +1,55 @@
+name: brains
+
+services:
+  brains:
+    container_name: brains
+    image: ghcr.io/jbrodriguez/brains:latest
+    # restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      txtai:
+        condition: service_healthy
+    ports:
+      - "7110:7624"
+    volumes:
+      - ${HOME}/pods/brains/data:/data
+      - ${HOME}/pods/brains/config/config.yaml:/app/config.yaml:ro
+      # Mount source directories as needed:
+      - /mnt/storage/guides:/sources/guides:ro
+      - /mnt/storage/servers:/sources/servers:ro
+    environment:
+      CONFIG_PATH: /app/config.yaml
+      DATA_DIR: /data
+      TZ: America/Panama
+
+  txtai:
+    container_name: brains-txtai
+    image: neuml/txtai-gpu
+    # user: "${UID:-1000}:${GID:-1000}"
+    # restart: unless-stopped
+    volumes:
+      - ${HOME}/pods/txtai/data:/app/data
+      - ${HOME}/pods/txtai/config/config.yml:/app/config.yml:ro
+    command: ["uvicorn", "txtai.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      CONFIG: /app/config.yml
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'python -c ''import urllib.request; urllib.request.urlopen("http://localhost:8000/count")''',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

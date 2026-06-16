@@ -1,6 +1,6 @@
 include:
   - ./caddy.yml
-  - ./portainer.yml
+  # - ./portainer.yml
   # - ./nominal.yml
   # - ./photoview.yml
   # - ./immich.yml
@@ -25,7 +25,7 @@ include:
   - ./navidrome.yml
   - ./glance.yml
   - ./miniflux.yml
-  - ./iptvnator.yml
+  # - ./iptvnator.yml
   - ./yt-dlp.yml
   - ./soulseek.yml
   - ./ollama.yml
@@ -34,12 +34,14 @@ include:
   - ./epub_to_audiobook.yml
   - ./url_monitor.yml
   - ./uhf-server.yml
-  - ./openclaw.yml
-  # - ./yt-recorder.yml
+  # - ./openclaw.yml
+  - ./yt-recorder.yml
 
   - ./zars.yml
   - ./mediagui.yml
   - ./timeline.yml
   - ./academy.yml
+  - ./brains.yml
+  # - ./imcla.yml
 
   - ./tabula.yml

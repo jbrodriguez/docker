@@ -15,6 +15,7 @@ services:
       ND_SESSIONTIMEOUT: 24h
       ND_BASEURL: ""
       ND_PLAYLISTSPATH: "."
+      ND_TRANSCODINGCACHESIZE: 1GB
     volumes:
       - ${HOME}/pods/navidrome:/data
       - "/mnt/storage/bbmusic/media:/music:ro"
